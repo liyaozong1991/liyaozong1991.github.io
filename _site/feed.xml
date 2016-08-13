@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title></title>
-    <description></description>
+    <title>灰度blog</title>
+    <description>用不完的笔记本</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 11 Aug 2016 22:46:11 +0800</pubDate>
-    <lastBuildDate>Thu, 11 Aug 2016 22:46:11 +0800</lastBuildDate>
+    <pubDate>Sat, 13 Aug 2016 20:48:41 +0800</pubDate>
+    <lastBuildDate>Sat, 13 Aug 2016 20:48:41 +0800</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Kmp Algorithm</title>
+        <description>&lt;h2 id=&quot;kmp&quot;&gt;kmp算法&lt;/h2&gt;
+
+&lt;p&gt;这道题目用到了kmp算法，很经典。&lt;/p&gt;
+</description>
+        <pubDate>Sat, 13 Aug 2016 00:00:00 +0800</pubDate>
+        <link>/2016/08/13/kmp-algorithm/</link>
+        <guid isPermaLink="true">/2016/08/13/kmp-algorithm/</guid>
+        
+        
+        <category>diary</category>
+        
+      </item>
     
       <item>
         <title>Empty Template</title>
@@ -16,8 +31,8 @@
 &lt;p&gt;Empty post template&lt;/p&gt;
 </description>
         <pubDate>Mon, 28 Dec 2015 00:00:00 +0800</pubDate>
-        <link>/paracraft/2015/12/28/empty-template.html</link>
-        <guid isPermaLink="true">/paracraft/2015/12/28/empty-template.html</guid>
+        <link>/2015/12/28/empty-template/</link>
+        <guid isPermaLink="true">/2015/12/28/empty-template/</guid>
         
         
         <category>paracraft</category>
@@ -31,8 +46,8 @@
 &lt;p&gt;Empty post template&lt;/p&gt;
 </description>
         <pubDate>Mon, 28 Dec 2015 00:00:00 +0800</pubDate>
-        <link>/npl/2015/12/28/empty-template.html</link>
-        <guid isPermaLink="true">/npl/2015/12/28/empty-template.html</guid>
+        <link>/2015/12/28/empty-template/</link>
+        <guid isPermaLink="true">/2015/12/28/empty-template/</guid>
         
         
         <category>npl</category>
@@ -46,8 +61,8 @@
 &lt;p&gt;Empty post template&lt;/p&gt;
 </description>
         <pubDate>Mon, 28 Dec 2015 00:00:00 +0800</pubDate>
-        <link>/diary/2015/12/28/empty-template.html</link>
-        <guid isPermaLink="true">/diary/2015/12/28/empty-template.html</guid>
+        <link>/2015/12/28/empty-template/</link>
+        <guid isPermaLink="true">/2015/12/28/empty-template/</guid>
         
         
         <category>diary</category>
@@ -68,8 +83,8 @@
 &lt;p&gt;http://www.nplproject.com&lt;/p&gt;
 </description>
         <pubDate>Sun, 27 Dec 2015 00:00:00 +0800</pubDate>
-        <link>/2015/12/27/useful-links.html</link>
-        <guid isPermaLink="true">/2015/12/27/useful-links.html</guid>
+        <link>/2015/12/27/useful-links/</link>
+        <guid isPermaLink="true">/2015/12/27/useful-links/</guid>
         
         
       </item>
@@ -94,8 +109,8 @@ print_hi('Tom')
 
 </description>
         <pubDate>Tue, 10 Feb 2015 23:14:54 +0800</pubDate>
-        <link>/jekyll/2015/02/10/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">/jekyll/2015/02/10/welcome-to-jekyll.html</guid>
+        <link>/2015/02/10/welcome-to-jekyll/</link>
+        <guid isPermaLink="true">/2015/02/10/welcome-to-jekyll/</guid>
         
         
         <category>jekyll</category>
