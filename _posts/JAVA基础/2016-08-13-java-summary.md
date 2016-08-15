@@ -1,7 +1,7 @@
 ---
 layout: post
 comments: true
-categories: diary
+categories: java基础
 ---
 
 ## Java基础知识总结
