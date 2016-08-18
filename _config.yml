@@ -30,5 +30,6 @@ markdown: kramdown
 
 # highlight
 # highlighter: pygments
-# highlighter: rouge
+highlighter: rouge
+encoding: utf-8
 # highlighter: false
