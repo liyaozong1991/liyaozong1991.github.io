@@ -4,5 +4,4 @@ layout: frontpage
 
 ## 欢迎来到我的微博
 
-This is the place where I share my ideas on topics like [Paracraft](http://www.paracraft.cn) software design, artificial intelligence and education. 
-Feel free to send me emails or join our team. 
+写了估计也不会有人看,自己写着玩。如果有人看,再好好改改,哈哈。
