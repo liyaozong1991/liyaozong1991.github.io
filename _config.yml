@@ -32,4 +32,4 @@ markdown: kramdown
 # highlighter: pygments
 highlighter: rouge
 encoding: utf-8
-#highlighter: false
+#highlighter: true
