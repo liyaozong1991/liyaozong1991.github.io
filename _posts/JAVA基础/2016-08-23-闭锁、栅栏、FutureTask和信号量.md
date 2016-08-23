@@ -11,9 +11,7 @@ categories: java基础
 ### 一、闭锁
 闭锁是一种同步工具类，可以控制线程的进度，闭锁的作用相当于一扇门：在闭锁到达结束状态之前，这扇门一直是关着的，
 并且没有任何线程可以通过，当达到结束状态时，这扇门会自动打开并允许所有线程通过。这扇门一旦打开，就不会再关闭。
-
-```
-public class TestHarness {
+`public class TestHarness {
     public long timeTasks(int nThreads, final Runnable task) throws InterruptedException {
         final CountDownLatch startGate = new CountDownLatch(1);
         final CountDownLatch endGate = new CountDownLatch(nThreads);
@@ -37,8 +35,7 @@ public class TestHarness {
         long end = System.nanoTime();
         return end - start;
     }
-}
-```
+}`
 这段代码的作用是统计所有的线程同时开始执行某个任务到最后一个线程完成任务的时间。为了保证所有的线程同时开始执行任务，
 使用了startGate。当所有线程执行完，endGate会停止等待。
 
