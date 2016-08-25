@@ -4,8 +4,7 @@ comments: true
 categories: 技术文档
 ---
 
-&emsp;&emsp;Memcached是高性能的分布式内存缓存服务器，通过缓存数据库查询结果，减少数据库访问次数，以及提高动态Web应用的速度和可扩展性。   
-&emsp;&emsp;Memcached有如下特点：
+&emsp;&emsp;Memcached是高性能的分布式内存缓存服务器，通过缓存数据库查询结果，减少数据库访问次数，以及提高动态Web应用的速度和可扩展性。Memcached有如下特点：
 
 * 协议简单   
 * 基于libevent的事件处理机制   
