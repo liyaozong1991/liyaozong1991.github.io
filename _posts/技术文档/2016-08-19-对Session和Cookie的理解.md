@@ -3,7 +3,6 @@ layout: post
 comments: true
 categories: 技术文档
 ---
-## 对cookie和session的理解
 
 今天学习了下cookie和session,简单谈谈自己的理解。
 
