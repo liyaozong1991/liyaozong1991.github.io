@@ -5,6 +5,7 @@ categories: 技术文档
 ---
 
 &emsp;&emsp;什么是http协议？http协议即超文本传输协议（HyperText Transfer Protocol）。简单的说，http就是一个基于应用的通信规范：双方要进行通信，大家都要遵守一个规范——http协议。http协议是一个应用层协议，由请求和响应构成，是一个标准的客户端服务器模型。http承载与tcp协议之上，默认端口号80。
+
 ## 一、Http协议如何工作？
 &emsp;&emsp;浏览网页是http协议的主要应用，但这并不代表http协议就只能应用于网页的浏览。只要通信双方都遵守http协议，其就有用武之地。比如腾讯QQ、迅雷等软件都使用http协议。   
 &emsp;&emsp;那么http协议是如何工作的呢？   
