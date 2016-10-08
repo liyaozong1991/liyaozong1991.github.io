@@ -5,17 +5,17 @@ categories: Spring
 ---
 
 ### 一、SpringMVC常用注解和基本配置
-&emsp;&emsp;SpringMVC常用一下几个注解：
+&emsp;&emsp;SpringMVC常用以下几个注解：
 
-1. Controller：Controller注解在类上，表明这个类是SpringMVC里的Controller，将其声明为spring的一个bean，Dispatcher Servlet会自动扫描注解次注解的类，并将web请求映射到注解了RequestMapping的方法上。这里特别指出，在声明普通的bean的时候，使用Component、Service、Repository和Controller是等同的，因为Service、Repository和Controller都组合了Component元注解，但是在SpringMVC声明控制器的时候，只能使用Controller。
+1. Controller：Controller注解在类上，表明这个类是SpringMVC里的Controller，并将其声明为spring的一个bean，Dispatcher Servlet会自动扫描注解此注解的类，并将web请求映射到注解了RequestMapping的方法上。这里特别指出，在声明普通的bean的时候，使用Component、Service、Repository和Controller是等同的，因为Service、Repository和Controller都组合了Component元注解，但是在SpringMVC声明控制器的时候，只能使用Controller。
 2. RequestMapping：这个注解是用来映射web请求（访问路径和参数）、处理类和方法的。RequestMapping可注解在类或者方法上。注解在方法上的RequestMapping路径会继承注解在类上的路径，RequestMapping支持Servlet的request和response作为参数，也支持对request和response的媒体类型进行配置。
-3. ResponseBody：可以注解在返回值前或者方法上。支持将返回值放在reponse体内，而不是返回一个页面。我们在很多基于Ajax的程序的时候，可以以此注解放回数据而不是页面。
+3. ResponseBody：可以注解在返回值前或者方法上。支持将返回值放在response体内，而不是返回一个页面。我们在很多基于Ajax的程序的时候，可以以此注解放回数据而不是页面。
 4. RequestBody：允许request的参数request体内，而不是直接连接在地址后面。此注解放置在参数前。
 5. PathValue：用来接收路径参数，如/news/001，可接受001作为参数，此注解放置在参数前。
 6. RestController：是一个注解组合，组合了Controller和ResponseBody，这就意味着当你只开发一个和页面交互数据的控制的时候，需要此注解。
 
 ### 二、SpringMVC基本配置
-&emsp;&emsp;SpringMVC的定制配置需要我们的配置继承已购车WebMvcConfigurerAdapter类，并在此类使用EnableWebMvc注解，来开启对SpringMVC的支持，这样我们就可以重写这个类的方法，完成我们的常用配置。
+&emsp;&emsp;SpringMVC的定制配置需要我们的配置类继承WebMvcConfigurerAdapter类，并在此类使用EnableWebMvc注解，来开启对SpringMVC的支持，这样我们就可以重写这个类的方法，完成我们的常用配置。
 
 1、静态资源映射   
 &emsp;&emsp;程序的静态资源等需要直接访问，这时我们可以在配置里重写addResourceHandlers方法来实现。
