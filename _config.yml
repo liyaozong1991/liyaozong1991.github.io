@@ -25,6 +25,8 @@ duoshuo_url: "https://liyaozong1991.github.io"
 #disqus_url: "http://huiya9527.github.io"
 #########################################
 
+paginate: 5
+
 # Build settings
 markdown: kramdown
 
