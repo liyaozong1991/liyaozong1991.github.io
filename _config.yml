@@ -26,6 +26,7 @@ duoshuo_url: "https://liyaozong1991.github.io"
 #########################################
 
 paginate: 5
+paginate_path: "page:num"
 
 # Build settings
 markdown: kramdown
