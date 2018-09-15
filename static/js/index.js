@@ -50,15 +50,6 @@ function fixFooterInit() {
 function fixFooter(footerHeight, footerMarginTop) {
     var windowHeight = $(window).height();
     var contentHeight = $('body>.container').outerHeight() + $('body>.container').offset().top + footerHeight + footerMarginTop;
-    // console.log("window---"+windowHeight);
-    // console.log("$('body>.container').outerHeight()---"+$('body>.container').outerHeight() );
-    // console.log("$('body>.container').height()---"+$('body>.container').height() );
-    // console.log("$('#main').height()--------"+$('#main').height());
-    // console.log("$('body').height()--------"+$('body').height());
-    //console.log("$('#main').html()--------"+$('#main').html());
-    // console.log("$('body>.container').offset().top----"+$('body>.container').offset().top);
-    // console.log("footerHeight---"+footerHeight);
-    // console.log("footerMarginTop---"+footerMarginTop);
     console.log(contentHeight);
     if (contentHeight < windowHeight) {
         $('footer').addClass('navbar-fixed-bottom');
