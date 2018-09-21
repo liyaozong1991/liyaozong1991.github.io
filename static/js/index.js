@@ -104,7 +104,6 @@ function backToTop() {
     });
     //点击回到顶部
     $("#top").click(function() {
-      document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
         //$("body").animate({
         //    scrollTop: "0"
