@@ -104,9 +104,11 @@ function backToTop() {
     });
     //点击回到顶部
     $("#top").click(function() {
-        $("body").animate({
-            scrollTop: "0"
-        }, 500);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+        //$("body").animate({
+        //    scrollTop: "0"
+        //}, 500);
     });
 
     //初始化tip
