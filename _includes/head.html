@@ -16,4 +16,13 @@
 	<script type="text/javascript" src="/static/js/highlight.min.js"></script>
 	<script type="text/javascript" src="{{"/static/js/index.js" | prepend:site.baseurl}}"></script>
 	<script>hljs.initHighlightingOnLoad();</script>
+	<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        inlineMath: [['$','$']]
+      }
+    });
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 </head>
