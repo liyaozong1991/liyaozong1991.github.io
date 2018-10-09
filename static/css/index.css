@@ -54,6 +54,13 @@ nav{
 
 	border-radius: 0;
 }
+
+.center-image
+{
+    margin: 0 auto;
+    display: block;
+}
+
 .navbar-nav li{
 	min-width: 95px;
 	text-align: center;
