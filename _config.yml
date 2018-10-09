@@ -28,6 +28,8 @@ gems: [jekyll-paginate]
 
 # Build settings
 markdown: kramdown
+kramdown:
+  input: GFM
 
 # highlight
 # highlighter: pygments
