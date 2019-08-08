@@ -36,3 +36,5 @@ kramdown:
 highlighter: rouge
 encoding: utf-8
 #highlighter: true
+
+theme: jekyll-theme-merlot
