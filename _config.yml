@@ -38,3 +38,6 @@ encoding: utf-8
 #highlighter: true
 
 theme: jekyll-theme-merlot
+
+incremental: false # 禁止使用增量构建
+
