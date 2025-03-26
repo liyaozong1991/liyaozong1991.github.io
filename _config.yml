@@ -39,6 +39,7 @@ encoding: utf-8
 
 #theme: jekyll-theme-merlot
 theme: monophase
+theme_dir: _themes/monophase
 
 incremental: false # 禁止使用增量构建
 
