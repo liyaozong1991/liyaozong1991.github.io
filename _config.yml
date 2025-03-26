@@ -22,9 +22,12 @@ duoshuo_shortname: liyaozong1991
 duoshuo_url: "https://liyaozong1991.github.io"
 #########################################
 
+theme: monophase
+theme_dir: ./_themes/monophase
+
 paginate: 10
 paginate_path: "page:num"
-gems: [jekyll-paginate]
+# gems: [jekyll-paginate]
 
 # Build settings
 markdown: kramdown
@@ -38,8 +41,7 @@ encoding: utf-8
 #highlighter: true
 
 #theme: jekyll-theme-merlot
-theme: monophase
-theme_dir: _themes/monophase
+
 
 incremental: false # 禁止使用增量构建
 
