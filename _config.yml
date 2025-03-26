@@ -22,8 +22,8 @@ duoshuo_shortname: liyaozong1991
 duoshuo_url: "https://liyaozong1991.github.io"
 #########################################
 
-theme: monophase
-theme_dir: ./_themes/monophase
+#theme: monophase
+theme_dir: _themes/monophase
 
 paginate: 10
 paginate_path: "page:num"
