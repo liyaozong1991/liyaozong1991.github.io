@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ page.lang | default: site.lang | default: 'en' }}">
   {% include head.html %}
- <!--  <body data-spy="scroll" data-target="#myAffix"> -->
   <body>
-    {% include header.html %}
-    <div id="main" class="container main">
-      {{ content }}
+    <div class="container">
+      {% include header.html %}
+
+      <main>
+        {{ content }}
+      </main>
+
+      {% include footer.html %}
     </div>
-    <div id="top" data-toggle="tooltip" data-placement="left" title="back to top">
-      <a href="javascript:;">
-        <div class="arrow"></div>
-        <div class="stick"></div>
-      </a>
-    </div>
-    {% include footer.html %}
-    {% include newpost.html %}
+
+    {% if page.math %}
+      {% include mathjax.html %}
+    {% endif %}
+
+    {% if jekyll.environment == 'production' and site.google_analytics %}
+      {% include google-analytics.html %}
+    {% endif %}
   </body>
 </html>

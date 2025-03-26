@@ -1,44 +1,86 @@
 ---
 layout: default
 ---
-<div class="row">
-  <div id="myArticle" class="col-sm-9">
-    <div class="post-area post">
-      <header>
-        <h1>{{ page.title }}</h1>
-        <p>{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
-      </header>
-      <hr>
-      <article>
-        {{content}}
-      </article>
-      <hr>
-        <div class="bdsharebuttonbox">
-            <a href="#" class="bds_more" data-cmd="more"></a>
-            <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-            <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
-            <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
-            <a href="#" class="bds_fbook" data-cmd="fbook" title="Share to Facebook"></a>
-            <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
-        </div>
-        <!--<script>
-            window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1",
-              "bdSize":"24"},"share":{}};
-              with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).
-                      src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
-        </script>-->
-    </div>
-	{% include comments.html %}
+
+<article class="post">
+  <h1 class="post-title">{{ page.title }}</h1>
+  <div class="post-meta">
+    <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+      {{ page.date | date_to_string }}
+    </time>
+    {%- if page.last_modified_at -%}
+      <span> ~ </span>
+      {%- assign mdate = page.last_modified_at | date_to_xmlschema -%}
+      <time datetime="{{ mdate }}" itemprop="dateModified">
+        {{ mdate | date_to_string }}
+      </time>
+    {%- endif -%}
+    {%- if page.author -%}
+      <span> • </span>
+      {% for author in page.author %}
+        <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+          {{ author }}
+        </span>
+        {%- if forloop.last == false %}, {% endif -%}
+      {% endfor %}
+    {%- endif -%}
+    {% if page.categories.size > 0 %}
+      <span> • </span>
+      <span class="post-categories-section">
+        <i class="post-categories-icon fas fa-folder"></i>
+        <ul class="post-categories">
+          {%- for category in page.categories -%}
+            <li>
+              {% assign slugified_category = category | slugify %}
+              {%- if site.categories_path -%}
+                <a class="post-category" href="{{ site.categories_path | relative_url }}#{{ slugified_category }}">{{ category }}</a>
+              {%- else -%}
+                <span class="post-category">{{ category }}</span>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </span>
+    {% endif %}
+    {% if page.tags.size > 0 %}
+      <span> • </span>
+      <span class="post-tags-section">
+        <i class="post-tags-icon fas fa-tag"></i>
+        <ul class="post-tags">
+          {%- for tag in page.tags -%}
+            <li>
+              {% assign slugified_tag = tag | slugify %}
+              {%- if site.tags_path -%}
+                <a class="post-tag" href="{{ site.tags_path | relative_url }}#{{ slugified_tag }}">{{ slugified_tag }}</a>
+              {%- else -%}
+                <span class="post-tag">{{ slugified_tag }}</span>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </span>
+    {% endif %}
   </div>
 
-  <div id="content" class="col-sm-3">
-    <!-- <div id="myAffix" class="shadow-bottom-center hidden-xs" data-spy="affix" data-offset-top="0" data-offset-bottom="-20"> -->
-    <div id="myAffix" class="shadow-bottom-center hidden-xs" >
-      <div class="categories-list-header">
-        Content
-      </div>
-      <div class="content-text"></div>
-    </div>
-  </div>
+  {{ content }}
 
-</div>
+  {% if jekyll.environment == "production" and site.disqus and page.comments != false %}
+    {% include disqus.html %}
+  {% endif %}
+</article>
+
+{% if site.related_posts != empty %}
+  <aside class="related">
+    <h2 class="related-title">Related posts</h2>
+    <ul class="related-posts">
+      {% for post in site.related_posts limit:3 %}
+        <li>
+          <a href="{{ post.url | relative_url }}">
+            {{ post.title }}
+          </a>
+          <small><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date_to_string }}</time></small>
+        </li>
+      {% endfor %}
+    </ul>
+  </aside>
+{% endif %}
