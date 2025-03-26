@@ -37,7 +37,8 @@ highlighter: rouge
 encoding: utf-8
 #highlighter: true
 
-theme: jekyll-theme-merlot
+#theme: jekyll-theme-merlot
+theme: monophase
 
 incremental: false # 禁止使用增量构建
 
