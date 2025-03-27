@@ -7,7 +7,7 @@ categories: 技术文档
 &emsp;&emsp;最近想要做一个文本自动分类器，主要是想试试不用的机器学习方法在文本分类上效果如何。训练分类器需要大规模的训练样本，于是需要利用python爬虫去爬取一些网页新闻作为样本，本想偷懒去网上直接找个能有的教程学习下scrapy，利用几个小时时间就把这个任务搞定，可是没想到居然踩了好多坑，在此记录一下。顺便还要吐槽一下，为什么这么多人喜欢转载别人的文章到自己的博客下面，有什么意义吗？需要学习收藏一下不就好了吗？这就导致无论的google还是baidu搜索中文博客教程总是搜到大量重复的文章，内容除了排版一点没变，实在浪费时间，搜索英文博客就好多了。   
 &emsp;&emsp;简单说下我的思路吧，就先爬取16年的网易新闻，主要爬取六个标签下的新闻，最后用于分类测试。因为新闻的时间和评论数都是非常有用的信息，虽然在基于文本内容分类的时候用不到，但是以后做其他工作的时候也许会用到，所以也一起爬了下来。我用的python版本是python2.7.12 32位的，选择32位的2.7版本没什么特别的原因，主要是各种库目前对python3的支持还不太好，本例子倒是关系不大。Scrapy版本1.2.1。Scrapy官方文档已经把一些基本的内容写的非常详细了，这里不再赘述，可以参考https://scrapy.org/。 利用Scrapy我们需要做的工作并不多，定义一些规则基本就可以实现简单的爬虫了。以下文档结构：
 
-![](http://ww4.sinaimg.cn/large/75e7ad61jw1fa8w0bkrjhj205807v74i.jpg)
+<!-- # ![](http://ww4.sinaimg.cn/large/75e7ad61jw1fa8w0bkrjhj205807v74i.jpg)-->
 
 &emsp;&emsp;我们重点关注的只是这个NewsSpider.py文件，这个就是定义的爬虫。下面给出文档内容：
 
@@ -26,7 +26,8 @@ from MySpider.items import MyspiderItem
 class NewsSpider(CrawlSpider):
     name = "news"
     allowed_domains = ["news.163.com","sports.163.com","ent.163.com","money.163.com","tech.163.com","digi.163.com"]
-    start_urls = ['http://www.163.com/']
+<!-- #     start_urls = ['http://www.163.com/']
+ -->
     rules=(
         Rule(LinkExtractor(allow=('/16/\d{4}/\d+/*',)),
         callback="parse_news",follow=True),
@@ -75,7 +76,8 @@ class NewsSpider(CrawlSpider):
                 docId = re.search("\"docId\" : \"\w*\"",scriptBody)
                 productKey = productKey.group(0)[16:-1]
                 docId = docId.group(0)[11:-1]
-                url = 'http://comment.news.163.com/api/v1/products/'+productKey+'/threads/'+docId
+<!-- #                 url = 'http://comment.news.163.com/api/v1/products/'+productKey+'/threads/'+docId
+ -->
                 body = urlopen(url)
                 # Convert bytes to string type and string type to dict
                 strs = body.read().decode('utf-8')
@@ -109,7 +111,8 @@ class NewsSpider(CrawlSpider):
 
 ```
 allowed_domains = ["news.163.com","sports.163.com","ent.163.com","money.163.com","tech.163.com","digi.163.com"]
-start_urls = ['http://www.163.com/']
+<!-- # start_urls = ['http://www.163.com/']
+ -->
 rules=(
     Rule(LinkExtractor(allow=('/16/\d{4}/\d+/*',)),      #表达式1
     callback="parse_news",follow=True),
@@ -135,7 +138,8 @@ self.db.autocommit(1)
 
 还有一个问题是中文乱码问题，为防止中文乱码，python文件最前都加入utf-8编码声明，mysql数据库也都采用utf-8编码。利用下面的命令把不是utf-8编码的字段改成utf-8编码。
 
-![](http://ww2.sinaimg.cn/large/75e7ad61jw1fa8vzmy2n4j20et043q3t.jpg)
+<!-- # ![](http://ww2.sinaimg.cn/large/75e7ad61jw1fa8vzmy2n4j20et043q3t.jpg)
+ -->
 
 ```
 show variables like 'character%'
@@ -143,4 +147,5 @@ set names utf8
 ```
 
 &emsp;&emsp;这篇博客结合scrapy文档应该可以解决爬取网易新闻中的大部分问题，完整项目代码地址：
-https://github.com/huiya9527/MySpider
+<!-- # https://github.com/huiya9527/MySpider
+ -->
