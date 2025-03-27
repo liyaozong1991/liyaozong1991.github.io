@@ -8,8 +8,6 @@ categories: 机器学习
 
 ## 标准注意力计算
 
-$$f=p(x)$$
-
 给定查询矩阵 $$Q \in \mathbb{R}^{N \times d}$$，键矩阵$$ K \in \mathbb{R}^{N \times d}$$，值矩阵$$V \in \mathbb{R}^{N \times d}$$，标准注意力输出$$O \in \mathbb{R}^{N \times d}$$计算为：
 
 $$
