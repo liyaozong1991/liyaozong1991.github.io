@@ -1,7 +1,6 @@
 ---
-layout: post
-comments: true
 categories: 机器学习
+math: true
 ---
 
 在PyTorch中，使用`nn.Parameter`（设置`requires_grad=False`）和`register_buffer`的主要区别如下：
