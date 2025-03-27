@@ -1,6 +1,5 @@
 ---
 title: flash attention推导
-date: YYYY-MM-DD HH:MM:SS +/-TTTT
 categories: [机器学习]
 tags: [大模型]     # TAG names should always be lowercase
 math: true
