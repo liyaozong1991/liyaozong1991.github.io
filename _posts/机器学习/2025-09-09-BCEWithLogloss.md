@@ -1,7 +1,7 @@
 ---
 categories: [机器学习]     # TAG names should always be lowercase
 math: true
-title: BCEWithLogloss
+title: BCEWithLogloss公式推导
 ---
 
 ## 1. 引言
