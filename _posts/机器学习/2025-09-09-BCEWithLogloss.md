@@ -100,3 +100,17 @@ L(y, x) &= max(x,0) + \log(1 + e^{-|x|}) - xy
 \end{split}
 \end{equation}
 $$
+
+公式4和公式7是等价的，我们之间从公式4求导可以比较方便的得出损失函数的导数：
+
+$$
+\begin{equation}
+\begin{split}
+\frac{\partial L(y, x)}{\partial x} &= \frac{\partial (\log(1 + e^{-x}) +x - xy)}{\partial x} \\
+&= \frac{1}{1 + e^{-x}} - y \\
+&= \sigma(x) - y
+\end{split}
+\end{equation}
+$$
+
+那么把损失函数写成公式7的形式，保证计算loss的稳定性，因为无论x是正数还是负数，$ -|x| <0 $, 保证了指数运算结果的范围在(0, 1]，不会越界。
