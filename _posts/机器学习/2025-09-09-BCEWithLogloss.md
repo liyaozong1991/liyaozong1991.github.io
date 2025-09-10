@@ -60,7 +60,7 @@ L(y, x) &= -[y \log(\frac{1}{1 + e^{-x}}) + (1 - y) \log(1 - \frac{1}{1 + e^{-x}
 &= -[-y \log(1 + e^{-x}) + (1 - y) (-x - \log(1 + e^{-x}))]  \\ 
 &= y \log(1 + e^{-x}) + (1 - y) (x + \log(1 + e^{-x}))  \\  
 &= y \log(1 + e^{-x}) + x + \log({1 + e^{-x}}) -xy -y \log(1+e^{-x}) \\
-&= log(1 + e^{-x}) + x - xy
+&= \log(1 + e^{-x}) + x - xy
 \end{split}
 \end{equation}
 $$
@@ -72,7 +72,7 @@ $$
 $$
 \begin{equation}
 \begin{split}
-L(y, x) &= log(1 + e^{-|x|}) + x - xy
+L(y, x) &= \log(1 + e^{-|x|}) + x - xy
 \end{split}
 \end{equation}
 $$
@@ -82,11 +82,11 @@ $$
 $$
 \begin{equation}
 \begin{split}
-L(y, x) &= log(1 + e^{-x}) + x - xy \\
+L(y, x) &= \log(1 + e^{-x}) + x - xy \\
 &= \log(\frac{e^{x}+1}{e^{x}}) + x - xy \\
-&= log(1 + e^{x}) - x + x -xy \\ 
-&= log(1+e^{x}) - xy \\
-&= log(1+e^{-|x|}) - xy
+&= \log(1 + e^{x}) - x + x -xy \\ 
+&= \log(1+e^{x}) - xy \\
+&= \log(1+e^{-|x|}) - xy
 \end{split}
 \end{equation}
 $$
@@ -96,7 +96,7 @@ $$
 $$
 \begin{equation}
 \begin{split}
-L(y, x) &= max(x,0) + log(1 + e^{-|x|}) - xy
+L(y, x) &= max(x,0) + \log(1 + e^{-|x|}) - xy
 \end{split}
 \end{equation}
 $$
