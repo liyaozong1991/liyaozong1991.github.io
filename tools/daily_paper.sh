@@ -101,7 +101,6 @@ log "开始调用 cursor-agent 生成论文笔记..."
 
 cursor-agent \
     -p "$PROMPT" \
-    --model "gpt-5.2" \
     --output-format text \
     --trust \
     >> "$LOG_FILE" 2>&1
