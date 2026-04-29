@@ -1,29 +1,9 @@
 #!/bin/bash
 #
 # 每日论文阅读笔记自动生成
-# 由 cursor-agent 直接执行：搜索论文、生成笔记、git push
-#
-
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-LOG_FILE="${SCRIPT_DIR}/daily_paper.log"
-
-export CURSOR_API_KEY="${CURSOR_API_KEY:-crsr_21df98ea579372e510ca0428cfa41ba8759dc8352a6f0bdfa04edc382941e5c3}"
 
 PROMPT='进入项目的 _posts/论文阅读/ 目录，查看已有的所有文章标题，然后：
 1. 搜索一篇2026年国内互联网大厂（字节跳动、阿里巴巴、美团、腾讯、百度、快手、京东等）在推荐系统方向上的论文，arXiv上有预印本的优先，内容不要与已有文章重复
 2. 仿照已有文章的 front matter 和正文格式，撰写一篇3000-5000字的深度阅读笔记，包含问题背景、方法详解（含关键公式）、实验结果、总结与个人思考
 3. 文件命名为 YYYY-MM-DD-论文简短中文标题.md，保存到 _posts/论文阅读/ 目录
 4. 执行 git add、git commit、git push origin master 推送到远程'
-
-cd "$PROJECT_DIR" || exit 1
-git pull origin master >> "$LOG_FILE" 2>&1
-
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] 开始执行" >> "$LOG_FILE"
-
-cursor-agent \
-    -p "$PROMPT" \
-    --trust \
-    >> "$LOG_FILE" 2>&1
-
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] 执行完毕 (exit: $?)" >> "$LOG_FILE"
