@@ -103,6 +103,7 @@ cursor-agent \
     -p "$PROMPT" \
     --model "claude-4.6-opus-max" \
     --output-format text \
+    --trust \
     >> "$LOG_FILE" 2>&1
 
 AGENT_EXIT_CODE=$?
