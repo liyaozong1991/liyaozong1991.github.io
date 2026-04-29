@@ -101,7 +101,7 @@ log "开始调用 cursor-agent 生成论文笔记..."
 
 cursor-agent \
     -p "$PROMPT" \
-    --model "claude-4.6-opus-max" \
+    --model "claude-4.6-opus-high-thinking" \
     --output-format text \
     --trust \
     >> "$LOG_FILE" 2>&1
