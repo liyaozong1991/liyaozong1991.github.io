@@ -202,7 +202,7 @@ $$
 
 现有的 RankMixer 架构在增加深度时 Scaling 效果有限——RankMixer-4-Blocks 的性能甚至**低于** RankMixer-2-Blocks（Table 4 中 AUC 下降 0.1066%）。TokenMixer-Large 虽然尝试通过间隔残差和辅助 loss 缓解这个问题，但没有从根本上解决。
 
-UniMixer 引入 SiameseNorm 来解决 Pre-Norm 和 Post-Norm 之间的矛盾。SiameseNorm 维护两个耦合流 $\bar{X}_\ell$ 和 $\bar{Y}_\ell$（均初始化为输入 embedding），在每一层执行：
+UniMixer 引入 SiameseNorm 来解决 Pre-Norm 和 Post-Norm 之间的矛盾。SiameseNorm 维护两个耦合流 $\bar{X}\_\ell$ 和 $\bar{Y}\_\ell$（均初始化为输入 embedding），在每一层执行：
 
 $$
 \tilde{Y}_\ell = \text{RMSNorm}(\bar{Y}_\ell), \quad O_\ell = \text{UniMixer}(\bar{X}_\ell + \tilde{Y}_\ell)
