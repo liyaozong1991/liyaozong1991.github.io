@@ -39,7 +39,7 @@ $$
 $$
 
 
-每个特征域通过 Embedding 层映射到不同维度的 embedding 向量 $ \textbf{e}_n = \text{Embedding}(\textbf{X}_{\text{domain}}) \in \mathbb{R}^{d_{\text{domain}}} $，然后所有域的 embedding 拼接为一个向量 $ \textbf{E} $。关键步骤是将 $ \textbf{E} $ 均匀切分成若干 block，每个 block 通过 **token 级独立线性层** 投影到统一维度 $D$：
+每个特征域通过 Embedding 层映射到不同维度的 embedding 向量 $\textbf{e}\_n = \text{Embedding}(\textbf{X}\_{\text{domain}}) \in \mathbb{R}^{d\_{\text{domain}}}$，然后所有域的 embedding 拼接为一个向量 $\textbf{E}$。关键步骤是将 $\textbf{E}$ 均匀切分成若干 block，每个 block 通过 **token 级独立线性层** 投影到统一维度 $D$：
 
 
 $$
