@@ -41,13 +41,13 @@ SSR 的理论基础建立在 Hayase & Karakida (2024) 对 MLP-Mixer 的分析之
 **Token-Mixing**（$W \in \mathbb{R}^{S \times S}$ 作用于 token 维度）：
 
 $$
-\text{vec}(WX) = (I\_C \otimes W) \text{vec}(X)
+\text{vec}(WX) = (I_C \otimes W) \text{vec}(X)
 $$
 
 **Channel-Mixing**（$V \in \mathbb{R}^{C \times C}$ 作用于通道维度）：
 
 $$
-\text{vec}(XV) = (V^\top \otimes I\_S) \text{vec}(X)
+\text{vec}(XV) = (V^\top \otimes I_S) \text{vec}(X)
 $$
 
 这里 $S$ 是 token 数量，$C$ 是通道维度。Kronecker 积结构带来了两个关键属性：
@@ -79,7 +79,7 @@ SSR 的核心设计遵循一个简洁原则：**先过滤，再融合（Filter-t
 与标准 Dense Layer 学习全局映射 $\mathbf{x} \to \mathbb{R}^{d\_{\text{out}}}$ 不同，SSR 将建模任务解耦为 $b$ 个**独立的净化视图（Purification View）**。每个视图 $i \in \{1, \dots, b\}$ 定义一个视图特定映射 $\phi\_i$，将输入映射到低维子空间表示 $\mathbf{z}\_i \in \mathbb{R}^{d\_v}$。每个映射严格分为两个阶段：
 
 $$
-\mathbf{x} \xrightarrow{\text{Sparse Filtering } \mathcal{F}\_i} \mathbf{h}\_i \xrightarrow{\text{Dense Fusion } \mathcal{M}\_i} \mathbf{z}\_i
+\mathbf{x} \xrightarrow{\text{Sparse Filtering } \mathcal{F}_i} \mathbf{h}_i \xrightarrow{\text{Dense Fusion } \mathcal{M}_i} \mathbf{z}_i
 $$
 
 ### 3.2 多视图稀疏过滤
@@ -87,7 +87,7 @@ $$
 过滤阶段实现严格的**维度级信号过滤**。定义一组稀疏过滤算子 $\{\mathcal{F}\_1, \dots, \mathcal{F}\_b\}$，第 $i$ 个视图的过滤结果为：
 
 $$
-\mathbf{h}\_i = \mathcal{F}\_i(\mathbf{x})
+\mathbf{h}_i = \mathcal{F}_i(\mathbf{x})
 $$
 
 SSR 提出两种过滤策略：
@@ -104,7 +104,7 @@ SSR-S 将 $\mathcal{F}\_i$ 实现为一个**与样本无关的二值选择矩阵
 过滤计算：
 
 $$
-\mathbf{h}\_i = \mathbf{x} M\_i
+\mathbf{h}_i = \mathbf{x} M_i
 $$
 
 由于 $M\_i$ 的每列是 one-hot 向量，这个矩阵乘法实际上是一个**零 FLOP 的并行索引切片操作（Parallel Gather）**——直接从输入向量中按索引取值，完全不涉及乘法或加法运算。**未被选中的维度在计算图中被物理移除**，而非仅仅乘以零。
@@ -116,7 +116,7 @@ $$
 为捕获上下文依赖的交互，SSR-D 使用 ICS（Iterative Competitive Sparse，详见第 4 节）作为动态过滤机制：
 
 $$
-\mathbf{h}\_i = \text{ICS}\_i(\mathbf{x} W^{\text{proj}}\_i)
+\mathbf{h}_i = \text{ICS}_i(\mathbf{x} W^{\text{proj}}_i)
 $$
 
 其中 $W^{\text{proj}}\_i \in \mathbb{R}^{d\_{\text{in}} \times d\_v^*}$ 是可学习的投影矩阵。注意视图维度通常被扩展（$d\_v^* > d\_v$），因为动态稀疏过滤会主动将部分维度截断为零，需要更大的初始维度来保持有效容量。输出 $\mathbf{h}\_i$ 是 $d\_v^*$ 维空间中的稀疏表示——大部分非关键元素被严格截断为零。
@@ -130,13 +130,13 @@ $$
 第 $i$ 个视图的输出：
 
 $$
-\mathbf{z}\_i = \sigma(\mathbf{h}\_i V\_i + \text{bias}\_i)
+\mathbf{z}_i = \sigma(\mathbf{h}_i V_i + \text{bias}_i)
 $$
 
 其中 $\sigma$ 为 GELU 激活函数。中间层的聚合方式为带 LayerNorm 的拼接：
 
 $$
-\mathbf{y} = \text{concat}(\text{LayerNorm}(\mathbf{z}\_1), \dots, \text{LayerNorm}(\mathbf{z}\_b)) \in \mathbb{R}^{b \cdot d\_v}
+\mathbf{y} = \text{concat}(\text{LayerNorm}(\mathbf{z}_1), \dots, \text{LayerNorm}(\mathbf{z}_b)) \in \mathbb{R}^{b \cdot d_v}
 $$
 
 **参数复杂度分析**。块对角结构的参数量为 $O(b \cdot d\_v^2)$，而等宽的标准全连接层为 $O((b \cdot d\_v)^2)$——SSR 的参数量减少了 $1/b$ 倍。这意味着**在相同计算预算下，SSR 可以显著扩展参数规模**。
@@ -146,7 +146,7 @@ $$
 中间层使用拼接聚合（保留视图间差异，传递给下一层），但**最后一层的聚合策略切换为平均**：
 
 $$
-\bar{\mathbf{z}} = \frac{1}{b} \sum\_{i=1}^{b} \text{LayerNorm}(\mathbf{z}\_i)
+\bar{\mathbf{z}} = \frac{1}{b} \sum_{i=1}^{b} \text{LayerNorm}(\mathbf{z}_i)
 $$
 
 平均聚合有两个关键优势：
@@ -157,7 +157,7 @@ $$
 最终通过任务特定的全连接层输出预测：
 
 $$
-y\_{\text{ctr}} = \sigma(W\_{\text{ctr}} \bar{\mathbf{z}} + b\_{\text{ctr}})
+y_{\text{ctr}} = \sigma(W_{\text{ctr}} \bar{\mathbf{z}} + b_{\text{ctr}})
 $$
 
 ---
@@ -185,13 +185,13 @@ $$
 全局抑制场（即当前所有特征的均值）：
 
 $$
-\mu^{(t)} = \frac{1}{d\_v} \sum\_{j=1}^{d\_v} x\_j^{(t)}
+\mu^{(t)} = \frac{1}{d_v} \sum_{j=1}^{d_v} x_j^{(t)}
 $$
 
 状态更新遵循"适者生存"规则——只有显著强于抑制场的特征才能存活，其余收敛到真正的零（硬稀疏）：
 
 $$
-\mathbf{x}^{(t+1)} = \text{ReLU}(\mathbf{x}^{(t)} - \alpha\_t \cdot \mu^{(t)})
+\mathbf{x}^{(t+1)} = \text{ReLU}(\mathbf{x}^{(t)} - \alpha_t \cdot \mu^{(t)})
 $$
 
 其中 $\alpha = \{\alpha\_0, \dots, \alpha\_{T-1}\}$ 是 $T$ 个**可学习的灭绝率**，不同迭代使用不同的 $\alpha\_t$。这是一个精妙的设计选择：不同迭代中特征分布是变化的（噪声被逐步清除后，均值 $\mu^{(t)}$ 的统计含义也在变化），使用不同的 $\alpha\_t$ 允许模型在不同阶段采用不同的过滤强度。
@@ -203,7 +203,7 @@ $$
 **单调性保证**。由于 $\alpha\_t > 0$ 且 $\mu^{(t)} \geq 0$，更新规则确保没有特征强度会增加：
 
 $$
-|\mathbf{x}^{(t+1)}|\_1 \leq |\mathbf{x}^{(t)}|\_1
+|\mathbf{x}^{(t+1)}|_1 \leq |\mathbf{x}^{(t)}|_1
 $$
 
 系统形成一个单调非递增序列——总能量随迭代不可避免地衰减。这有效过滤了噪声，但也导致有用信号的强度显著衰减。
