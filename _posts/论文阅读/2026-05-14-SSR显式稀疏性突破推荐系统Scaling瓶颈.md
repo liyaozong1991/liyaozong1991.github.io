@@ -57,6 +57,24 @@ $$
 
 结合 Golubeva 假说——**在参数量固定的前提下，增加宽度（因此增加稀疏度）能持续改善泛化性能**——这些理论发现为结构化稀疏作为有益归纳偏置提供了理论支撑。
 
+#### MLP-Mixer 直觉理解
+
+MLP-Mixer 最初由 Google 提出，是一个纯 MLP 的视觉架构——不用卷积、不用注意力，只用全连接层完成特征交互。以图像分类为例：一张 224×224 的图片按 16×16 切分得到 196 个 patch，每个 patch 通过线性投影压缩为一个 embedding 向量（如 512 维），最终得到输入矩阵 $X \in \mathbb{R}^{196 \times 512}$（196 个 token，每个 512 维）。注意 RGB 通道信息在投影这一步就已被编码进向量中，进入 Mixer 后每个 patch 已是抽象的 embedding 而非原始图片。
+
+MLP-Mixer 交替使用两种 MLP 实现特征交互：
+
+- **Token-Mixing**：将矩阵转置为 $X^T \in \mathbb{R}^{512 \times 196}$，对每一行（即同一维度位置上所有 196 个 token 的值）做共享 MLP：$\mathbb{R}^{196} \to \mathbb{R}^{196}$。直觉上，这是让不同空间位置的 patch "互相看到对方"——图片左上角和右下角的 patch 通过这个 MLP 交换信息，功能类似 Attention（跨位置通信），但用全连接层而非 Q/K 相似度实现。
+- **Channel-Mixing**：对每个 token 的 512 维向量独立做 MLP：$\mathbb{R}^{512} \to \mathbb{R}^{512}$，所有 token 共享同一个 MLP。这与 Transformer 中的 FFN 层完全对应——每个位置独立地做特征变换。
+
+| | Token-Mixing | Channel-Mixing |
+| --- | --- | --- |
+| 操作维度 | 跨 token（跨 patch） | 每个 token 内部（跨维度） |
+| 直觉 | 不同位置之间通信 | 同一位置内部特征变换 |
+| 类比 Transformer | 类似 Attention | 类似 FFN |
+| 参数共享 | 所有维度共享同一个 MLP | 所有 token 共享同一个 MLP |
+
+上述 Kronecker 积公式正是这种结构的数学表达：Token-Mixing 中 $I_C \otimes W$ 意味着通道维度保持不变（$I_C$），只在 token 维度做线性变换（$W$）；Channel-Mixing 中 $V^\top \otimes I_S$ 意味着 token 位置保持不变（$I_S$），只在通道维度做线性变换（$V^\top$）。这种 Kronecker 积结构天然带来了高度稀疏性——等效的大矩阵中大部分元素为零。
+
 ### 2.2 从 MLP-Mixer 到 SSR 的跨越
 
 MLP-Mixer 的成功依赖于图像 patch 的空间规则性——Kronecker 积的固定数学结构恰好匹配图像的网格拓扑。但推荐数据缺乏这种规则性：哪些特征交互有信息量是高度**数据依赖且样本依赖**的。
