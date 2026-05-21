@@ -179,7 +179,23 @@ $$
 \bar{W}_G = \text{Sinkhorn-Knopp}\Big(\frac{\tilde{W}_G}{\tau}\Big), \quad \bar{W}_B^i = \text{Sinkhorn-Knopp}\Big(\frac{\tilde{W}_B^i}{\tau}\Big)
 $$
 
-**稀疏性约束**。通过温度系数 $\tau$ 控制——$\tau$ 越小，Sinkhorn-Knopp 输出越接近独热分布（越稀疏），$\tau$ 越大，分布越均匀。论文消融实验证明低温度（高稀疏性）对模型性能有显著正面效果。
+Sinkhorn-Knopp 算法的具体步骤如下。以 $\tilde{W}\_G / \tau$ 为例：
+
+1. **指数化**：$M = \exp(\tilde{W}\_G / \tau)$，确保所有元素为正
+2. **交替归一化迭代**（重复若干次直到收敛）：
+   - 行归一化：$M\_{ij} \leftarrow M\_{ij} / \sum\_k M\_{ik}$（使每行之和 = 1）
+   - 列归一化：$M\_{ij} \leftarrow M\_{ij} / \sum\_k M\_{kj}$（使每列之和 = 1）
+
+以一个 $2 \times 2$ 的例子说明。假设 $\tilde{W}\_G / \tau = \begin{bmatrix} 2 & 0 \\\\ 0 & 1 \end{bmatrix}$：
+
+- 指数化：$M = \begin{bmatrix} e^2 & e^0 \\\\ e^0 & e^1 \end{bmatrix} = \begin{bmatrix} 7.39 & 1 \\\\ 1 & 2.72 \end{bmatrix}$
+- 第 1 次行归一化：$\begin{bmatrix} 0.881 & 0.119 \\\\ 0.269 & 0.731 \end{bmatrix}$（每行之和 = 1，但列和分别为 1.15 和 0.85）
+- 第 1 次列归一化：$\begin{bmatrix} 0.766 & 0.140 \\\\ 0.234 & 0.860 \end{bmatrix}$（每列之和 = 1，但行和又不精确为 1）
+- ...继续迭代若干次后收敛到双随机矩阵
+
+注意这些约束是在**前向传播中**作为计算图的一部分实现的：模型存储的可学习参数是无约束的原始 $W\_G$ 和 $W\_B^i$，每次前向传播时依次执行对称化 → 除以温度 → Sinkhorn-Knopp 迭代，得到满足约束的 $\bar{W}\_G$ 和 $\bar{W}\_B^i$ 用于实际计算。反向传播时梯度穿过这些可微操作回传到原始参数上。
+
+**稀疏性约束**。通过温度系数 $\tau$ 控制。关键在于指数化步骤 $\exp(\tilde{W}/\tau)$：$\tau$ 越小，元素间的比值被指数级放大，归一化后越接近 one-hot 分布（越稀疏）；$\tau$ 越大，元素间差异被压缩，归一化后越接近均匀分布。论文消融实验证明低温度（高稀疏性）对模型性能有显著正面效果。
 
 最后加上残差连接和 RMSNorm：
 
