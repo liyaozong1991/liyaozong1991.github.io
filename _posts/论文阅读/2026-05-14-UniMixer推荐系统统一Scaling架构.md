@@ -72,7 +72,49 @@ $$
 \text{TokenMixer}(X) = \text{reshape}(W^{\text{perm}} \cdot \text{flatten}(X))
 $$
 
-论文在附录 A 中给出了一个 $T=2, D=6$ 的具体数值示例来直观说明这一点。当 $X = \begin{bmatrix} x\_1 & x\_2 & x\_3 & x\_4 & x\_5 & x\_6 \\\\ x\_7 & x\_8 & x\_9 & x\_{10} & x\_{11} & x\_{12} \end{bmatrix}$ 时，TokenMixer 的输出为 $\begin{bmatrix} x\_1 & x\_2 & x\_3 & x\_7 & x\_8 & x\_9 \\\\ x\_4 & x\_5 & x\_6 & x\_{10} & x\_{11} & x\_{12} \end{bmatrix}$，这个变换可以精确用一个 $12 \times 12$ 的排列矩阵来表示。
+论文在附录 A 中给出了一个 $T=2, D=6$ 的具体数值示例来直观说明这一点。当 $X = \begin{bmatrix} x\_1 & x\_2 & x\_3 & x\_4 & x\_5 & x\_6 \\\\ x\_7 & x\_8 & x\_9 & x\_{10} & x\_{11} & x\_{12} \end{bmatrix}$ 时，$H=T=2$，每个 token 切分为 2 个 head，每个 head 维度为 $D/H=3$：
+
+- token1: $[x\_1, x\_2, x\_3 \mid x\_4, x\_5, x\_6]$（head1 $\mid$ head2）
+- token2: $[x\_7, x\_8, x\_9 \mid x\_{10}, x\_{11}, x\_{12}]$（head1 $\mid$ head2）
+
+跨 token 重组后（所有 token 的第 $h$ 个 head 拼接成新 token）：
+
+- 新 token1（所有 token 的 head1）: $[x\_1, x\_2, x\_3, x\_7, x\_8, x\_9]$
+- 新 token2（所有 token 的 head2）: $[x\_4, x\_5, x\_6, x\_{10}, x\_{11}, x\_{12}]$
+
+即输出为 $\begin{bmatrix} x\_1 & x\_2 & x\_3 & x\_7 & x\_8 & x\_9 \\\\ x\_4 & x\_5 & x\_6 & x\_{10} & x\_{11} & x\_{12} \end{bmatrix}$。
+
+将输入展平为 $\text{flatten}(X) = [x\_1, x\_2, x\_3, x\_4, x\_5, x\_6, x\_7, x\_8, x\_9, x\_{10}, x\_{11}, x\_{12}]^\top$，输出展平为 $[x\_1, x\_2, x\_3, x\_7, x\_8, x\_9, x\_4, x\_5, x\_6, x\_{10}, x\_{11}, x\_{12}]^\top$，则对应的 $12 \times 12$ 排列矩阵为：
+
+$$
+W^{\text{perm}} = \left[\begin{array}{ccc:ccc:ccc:ccc}
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\hdashline
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+\hdashline
+0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\hdashline
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+\end{array}\right]
+$$
+
+虚线将矩阵划分为 $3 \times 3$ 的 block 结构（对应 $D/H=3$），可以清晰看到：第 1 个 block 行取输入的第 1 个 block（token1-head1 → 输出位置 1~3），第 2 个 block 行取输入的第 3 个 block（token2-head1 → 输出位置 4~6），第 3 个 block 行取输入的第 2 个 block（token1-head2 → 输出位置 7~9），第 4 个 block 行取输入的第 4 个 block（token2-head2 → 输出位置 10~12）。每个 block 内部都是单位矩阵 $I\_3$，表示 block 内元素顺序不变。
+
+**Kronecker 积分解**。上述矩阵可以分解为 $W^{\text{perm}} = G \otimes I\_3$，其中全局排列矩阵 $G \in \mathbb{R}^{4 \times 4}$ 控制 4 个 block 之间的重排规则：
+
+$$
+G = \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix}
+$$
+
+$G$ 的含义：block1（token1-head1）不动，block2（token1-head2）和 block3（token2-head1）交换，block4（token2-head2）不动。$I\_3$ 表示每个 block 内部保持原序。这就是"可压缩性"的直观体现——一个 $12 \times 12$ 的排列矩阵完全由一个 $4 \times 4$ 的矩阵和一个 $3 \times 3$ 的单位矩阵决定。
 
 更重要的是，论文发现了这个排列矩阵 $W^{\text{perm}}$ 的四个关键数学性质：
 
